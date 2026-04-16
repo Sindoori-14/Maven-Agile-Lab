@@ -1,38 +1,55 @@
 package com.example;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 public class App {
-
-    private int availableBooks = 0;
-
-    public void addBooks(int count) {
-        if (count <= 0) {
-            throw new IllegalArgumentException("Book count must be greater than zero");
-        }
-        availableBooks += count;
-    }
-
-    public void issueBook() {
-        if (availableBooks <= 0) {
-            throw new IllegalArgumentException("No books available to issue");
-        }
-        availableBooks--;
-    }
-
-    public void returnBook() {
-        availableBooks++;
-    }
-
-    public int getAvailableBooks() {
-        return availableBooks;
-    }
-
     public static void main(String[] args) {
-        App library = new App();
+        Scanner scanner = new Scanner(System.in);
 
-        library.addBooks(10);
-        library.issueBook();
-        library.returnBook();
+        System.out.print("Enter User Name: ");
+        String name = scanner.nextLine();
 
-        System.out.println("Available Books: " + library.getAvailableBooks());
+        System.out.print("Enter User ID: ");
+        String id = scanner.nextLine();
+
+        System.out.print("Enter number of books issued: ");
+        int numBooks = scanner.nextInt();
+        scanner.nextLine(); // consume newline
+
+        List<String> books = new ArrayList<>();
+        for (int i = 0; i < numBooks; i++) {
+            System.out.print("Enter name of book " + (i + 1) + ": ");
+            books.add(scanner.nextLine());
+        }
+
+        System.out.print("Enter number of days borrowed: ");
+        int days = scanner.nextInt();
+
+        double fine = calculateFine(days);
+
+        // Display Summary
+        System.out.println("\n--- Library Borrowing Report ---");
+        System.out.println("User Name: " + name);
+        System.out.println("User ID: " + id);
+        System.out.println("Books Issued: " + books);
+        System.out.println("Days Borrowed: " + days);
+        System.out.println("Total Fine: ₹" + fine);
+
+        scanner.close();
+    }
+
+    /**
+     * Logic: Allowed limit is 7 days. 
+     * Fine is ₹5.0 for every day beyond the limit.
+     */
+    public static double calculateFine(int days) {
+        int allowedLimit = 7;
+        double finePerDay = 5.0;
+        if (days > allowedLimit) {
+            return (days - allowedLimit) * finePerDay;
+        }
+        return 0.0;
     }
 }
