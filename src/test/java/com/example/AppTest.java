@@ -1,43 +1,25 @@
 package com.example;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
-class AppTest {
+public class AppTest {
 
     @Test
-    void testAddBooks() {
-        App library = new App();
-        library.addBooks(10);
-        assertEquals(10, library.getAvailableBooks());
+    public void testNoFineWithinLimit() {
+        // Borrowing for 7 days (the limit) should result in 0 fine
+        assertEquals(0.0, App.calculateFine(7), "Fine should be 0 for 7 days");
     }
 
     @Test
-    void testIssueBook() {
-        App library = new App();
-        library.addBooks(5);
-        library.issueBook();
-        assertEquals(4, library.getAvailableBooks());
+    public void testFineCalculation() {
+        // Borrowing for 10 days (3 days extra)
+        // 3 * 5.0 = 15.0
+        assertEquals(15.0, App.calculateFine(10), "Fine should be 15.0 for 10 days");
     }
 
     @Test
-    void testReturnBook() {
-        App library = new App();
-        library.addBooks(5);
-        library.issueBook();
-        library.returnBook();
-        assertEquals(5, library.getAvailableBooks());
-    }
-
-    @Test
-    void testIssueBookWhenNoBooksAvailable() {
-        App library = new App();
-        assertThrows(IllegalArgumentException.class, library::issueBook);
-    }
-
-    @Test
-    void testInvalidAddBooks() {
-        App library = new App();
-        assertThrows(IllegalArgumentException.class, () -> library.addBooks(0));
+    public void testZeroDays() {
+        assertEquals(0.0, App.calculateFine(0), "Fine should be 0 for 0 days");
     }
 }
