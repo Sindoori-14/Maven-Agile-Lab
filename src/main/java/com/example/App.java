@@ -2,17 +2,37 @@ package com.example;
 
 public class App {
 
-    public int add(int a, int b) {
-        return a + b;
+    private int availableBooks = 0;
+
+    public void addBooks(int count) {
+        if (count <= 0) {
+            throw new IllegalArgumentException("Book count must be greater than zero");
+        }
+        availableBooks += count;
     }
 
-    public int subtract(int a, int b) {
-        return a - b;
+    public void issueBook() {
+        if (availableBooks <= 0) {
+            throw new IllegalArgumentException("No books available to issue");
+        }
+        availableBooks--;
+    }
+
+    public void returnBook() {
+        availableBooks++;
+    }
+
+    public int getAvailableBooks() {
+        return availableBooks;
     }
 
     public static void main(String[] args) {
-        App calc = new App();
-        System.out.println("Addition: " + calc.add(10,5));
-        System.out.println("Subtraction: " + calc.subtract(10,5));
+        App library = new App();
+
+        library.addBooks(10);
+        library.issueBook();
+        library.returnBook();
+
+        System.out.println("Available Books: " + library.getAvailableBooks());
     }
 }
